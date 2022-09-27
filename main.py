@@ -1,8 +1,17 @@
-from typing import Union
+from typing import Optional, Union
+from uuid import UUID
 
 from fastapi import FastAPI
+from pydantic import BaseModel
 
 app = FastAPI()
+
+
+class Blog(BaseModel):
+    id: UUID
+    title: str
+    body: str
+    published: Optional[bool]
 
 
 @app.get("/")
@@ -22,3 +31,8 @@ def my_first_function(limit, name):
 @app.get("/api/comment/{id}")
 def get_comments_by_id(id: int):
     return {"data": {'id': id}}
+
+
+@app.post("/api")
+def creating_user(new_user: Blog):
+    return f"new Blog was created with title as {new_user.title}"
